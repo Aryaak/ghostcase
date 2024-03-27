@@ -1,0 +1,100 @@
+@font-face {
+    font-family: "Ghostoons";
+    src: url("../font/Ghostoons.woff") format("woff");
+}
+
+body {
+    font-family: "Ghostoons";
+    display: grid;
+    place-items: center;
+    background-color: #171421;
+    overflow: hidden;
+    background-image: url('../img/forest.gif');
+    background-size: cover;
+}
+
+.scroll-top {
+    transform: translate(0, -100vh);
+    transition: all 300ms;
+}
+
+.play-modal {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #171421;
+    z-index: 9999;
+    display: grid;
+    place-items: center;
+    transition: all 300ms;
+}
+
+.play-modal h1 {
+    font-size: 10rem;
+    background: linear-gradient(45deg, #856359, #feb47b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    perspective: 1000px;
+    display: inline-block;
+    margin-bottom: 0;
+}
+
+.play-modal h1::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #fff;
+    text-shadow: -5px -5px 5px rgba(255, 255, 255, 0.2),
+                 5px 5px 5px rgba(0, 0, 0, 0.2);
+    transform: translateZ(10px);
+}
+
+.play-button {
+    position: relative;
+    cursor: pointer;
+  
+}
+
+.play-button img {
+    width: 400px;
+}
+
+.play-button:active {
+    transform: scale(.8);
+    transition: all 300ms;
+}
+
+.play-button p {
+    position: absolute;
+    top: -20px;
+    left: 140px;
+    font-size: 60px;
+    color: #ffdd88;
+}
+
+canvas {
+    background-image: url('../img/library.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.menu {
+    position: absolute;
+    right: 2vw;
+    top: 2vh;
+}
+
+.menu img {
+    width: 80px;
+    cursor: pointer;
+    transition: all 100ms;
+}
+
+.menu img:active {
+    transform: scale(.8);
+    transition: all 100ms;
+}
