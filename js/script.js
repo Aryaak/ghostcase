@@ -3,7 +3,7 @@ let start = false;
 
 const levels = [{
         title: 'Saya harus menemukan petunjuk 1',
-        description: 'Petunjuk 1 berada pada semua tempat duduk'
+        description: 'Petunjuk 1 berada pada sebuah tempat duduk'
     },
     {
         title: 'Wuih, saya menemukan petunjuk 1',
