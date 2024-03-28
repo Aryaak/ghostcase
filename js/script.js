@@ -27,6 +27,19 @@ const levels = [{
     }
 ];
 
+const wrong = [
+    'Tidak ada apa-apa disini',
+    'Sepertinya aku salah tempat',
+    'Hmmmm',
+    'Kok kosong yaaah',
+    'Aku salah tempat deh',
+    'Bukan disini sepertinya',
+    'Tidak ada petunjuk disini',
+    'Dimana ya petunjuknya',
+    'Aku salah lokasi kayanya',
+    'Buuuh'
+];
+
 function showInfoModal(level) {
     level -= 1;
     document.querySelector('.info-modal').classList.remove('none');
@@ -35,6 +48,7 @@ function showInfoModal(level) {
 }
 
 document.querySelector('.play-button').addEventListener('click', () => {
+    start = true;
     document.querySelector('.play-modal').classList.add('scroll-top');
     setTimeout(() => {
         showInfoModal(1);
@@ -126,6 +140,8 @@ document.querySelector('.close').addEventListener('click', function () {
 });
 
 document.addEventListener('keydown', function (event) {
+    if (!start) return false;
+
     if (event.key === 'ArrowRight') {
         if (!rightClick) {
             moveRightInterval = setInterval(moveRight, 1);
@@ -164,29 +180,34 @@ document.addEventListener('keydown', function (event) {
         if (level == 1 && ((x >= 80 && x <= 110) && (y > 400 && y < 480))) {
             level += 1;
             showInfoModal(level);
-        }
-        if (level == 2 && ((x >= 900 && x <= 950) && (y > 305 && y < 350))) {
+        } else if (level == 2 && ((x >= 900 && x <= 950) && (y > 305 && y < 350))) {
             level += 1;
             showInfoModal(level);
-        }
-        if (level == 3 && ((x >= 4 && x <= 6) && (y > 50 && y < 70))) {
+        } else if (level == 3 && ((x >= 4 && x <= 6) && (y > 50 && y < 70))) {
             level += 1;
             showInfoModal(level);
-        }
-        if (level == 4 && ((x >= 460 && x <= 500) && (y > 240 && y < 400))) {
+        } else if (level == 4 && ((x >= 460 && x <= 500) && (y > 240 && y < 400))) {
             level += 1;
             showInfoModal(level);
-        }
-        if (level == 5 && ((x >= (heavenX - 50) && x <= (heavenX + 50)) && (y >= (heavenY - 50) && y <= (heavenY + 50)))) {
+        } else if (level == 5 && ((x >= (heavenX - 50) && x <= (heavenX + 50)) && (y >= (heavenY - 50) && y <= (heavenY + 50)))) {
             level += 1;
             showInfoModal(level);
+        } else {
+            Toastify({
+                text: wrong[(Math.floor(Math.random() * wrong.length) + 1) - 1],
+                className: "info",
+                position: "center",
+                style: {
+                    background: "#856359",
+                }
+            }).showToast();
         }
 
-        if(level == 5){
+        if (level == 5) {
             setInterval(() => {
                 console.log('HEAVEN', heavenX, heavenY);
                 heavenMove = Math.floor(Math.random() * 4) + 1;
-            
+
                 if (heavenMove == 1) {
                     if (!hevenRightClick) {
                         heavenMoveRightInterval = setInterval(heavenMoveRight, 1);
@@ -210,7 +231,7 @@ document.addEventListener('keydown', function (event) {
                         heavenMoveUpInterval = setInterval(heavenMoveUp, 1);
                     }
                 }
-            
+
                 if (heavenMove == 1) {
                     hevenRightClick = true;
                     heavenLeftClick = false;
@@ -237,6 +258,8 @@ document.addEventListener('keydown', function (event) {
 });
 
 document.addEventListener('keyup', function (event) {
+    if (!start) return false;
+
     if (event.key === 'ArrowRight') {
         rightClick = true;
         leftClick = false;
