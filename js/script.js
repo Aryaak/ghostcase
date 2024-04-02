@@ -2,29 +2,29 @@ let level = 1;
 let start = false;
 
 const levels = [{
-        title: 'Saya harus menemukan petunjuk 1',
+        title: 'Aku harus menemukan petunjuk 1',
         description: 'Petunjuk 1 berada pada sebuah tempat duduk'
     },
     {
-        title: 'Wuih, saya menemukan petunjuk 1',
+        title: 'Wuih, aku menemukan petunjuk 1',
         description: 'Petunjuk 2 berada di rak, tetapi bukan sebuah buku'
     },
     {
-        title: 'Keren, saya menemukan petunjuk 2',
+        title: 'Keren, aku menemukan petunjuk 2',
         description: 'Petunjuk 3 berada di sesuatu yang menyala pertama'
     },
     {
-        title: 'Buuh, saya menemukan petunjuk 3',
+        title: 'Buuh, aku menemukan petunjuk 3',
         description: 'Petunjuk 4 dilindungi oleh pedang'
     },
     {
         title: 'Yey, Itu adalah petunjuk terakhir',
-        description: 'Pintu surga telah terbuka, namun harus dikejar'
+        description: 'Jawab teka-teki untuk keluar dari perpustakaan'
     },
     {
-        title: 'Hore, dadaagh aku sudah bebas',
-        description: 'SELAMAT, Arwah penasaran telah tenang'
-    }
+        title: 'Selamat jawaban kamu benar',
+        description: 'Arwah penasaran kini sudah bebas dari perpustakaan'
+    },
 ];
 
 const wrong = [
@@ -40,18 +40,44 @@ const wrong = [
     'Buuuh'
 ];
 
-function showInfoModal(level) {
+const questions = [{
+        question: 'Kamu memakanku mulai dari merah, tapi berhenti saat hijau. Siapa aku?',
+        answer: 'Semangka'
+    },
+    {
+        question: 'Aku tinggi ketika masih muda, dan pendek ketika sudah tua. Siapa aku?',
+        answer: 'Lilin'
+    },
+    {
+        question: 'Aku memiliki kepala dan ekor yang tidak pernah bertemu. Siapa aku?',
+        answer: 'Koin'
+    },
+    {
+        question: 'Aku bercukur setiap hari, tetapi janggutku tetap sama. Siapa aku?',
+        answer: 'Tukang Cukur'
+    },
+    {
+        question: 'Aku memiliki cabang, tetapi tidak punya buah, batang, atau daun. Siapa aku?',
+        answer: 'Bank'
+    },
+]
+
+const tekaTeki = questions[(Math.floor(Math.random() * questions.length) + 1) - 1];
+
+function showLevelModal(level) {
     level -= 1;
-    document.querySelector('.info-modal').classList.remove('none');
-    document.querySelector('.info-modal h3').innerText = levels[level].title;
-    document.querySelector('.info-modal p').innerText = levels[level].description;
+
+    document.querySelector('.level-modal').classList.remove('none');
+    document.querySelector('.level-modal h3').innerText = levels[level].title;
+    document.querySelector('.level-modal p').innerText = levels[level].description;
+
 }
 
 document.querySelector('.play-button').addEventListener('click', () => {
     start = true;
     document.querySelector('.play-modal').classList.add('scroll-top');
     setTimeout(() => {
-        showInfoModal(1);
+        showLevelModal(1);
     }, 500);
 });
 
@@ -74,26 +100,13 @@ let frameCount = columns * rows;
 const animationSpeed = 30;
 const scaleFactor = 0.1;
 
-const heavenImage = new Image();
-heavenImage.src = 'img/heaven.png';
-let heavenX = 5; // X coordinate
-let heavenY = 15; // Y coordinate
-const heavenWidth = 100; // Width of the image
-const heavenHeight = 100;
-let heavenMove = 1;
-
 let x = 5;
 let y = 15;
 let moveRightInterval, moveLeftInterval, moveDownInterval, moveUpInterval;
-let heavenMoveRightInterval, heavenMoveLeftInterval, heavenMoveDownInterval, heavenMoveUpInterval;
 let rightClick = false;
 let leftClick = false;
 let downClick = false;
 let upClick = false;
-let heavenRightClick = false;
-let heavenLeftClick = false;
-let heavemDownClick = false;
-let heavenUpClick = false;
 
 function drawGhost() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -112,19 +125,9 @@ function drawGhost() {
     currentFrame = (currentFrame + 1) % frameCount;
 }
 
-function drawHeaven() {
-    ctx.drawImage(
-        heavenImage,
-        heavenX,
-        heavenY,
-        heavenWidth,
-        heavenHeight
-    );
-}
 
 function update() {
-    if (level < 6) drawGhost();
-    if (level == 5) drawHeaven();
+    drawGhost();
     setTimeout(update, animationSpeed);
 }
 
@@ -132,11 +135,23 @@ ghostImage.onload = function () {
     update();
 };
 
-document.querySelector('.close').addEventListener('click', function () {
-    document.querySelector('.info-modal').classList.add('none');
-    if (level == 6) {
-        document.location.reload();
-    }
+var closes = document.querySelectorAll('.close');
+
+closes.forEach(function(element) {
+    element.addEventListener('click', function () {
+        document.querySelector('.level-modal').classList.add('none');
+        document.querySelector('.info-modal').classList.add('none');
+
+        if (level == 5) {
+            document.querySelector('.question-modal').classList.remove('none');
+            document.querySelector('.question-modal h3').innerText = 'Teka-Teki';
+            document.querySelector('.question-modal p').innerText = tekaTeki.question;
+        }
+
+        if(level > 5){
+            window.location.reload();
+        }
+    });
 });
 
 document.addEventListener('keydown', function (event) {
@@ -177,85 +192,47 @@ document.addEventListener('keydown', function (event) {
     }
 
     if (event.key === 'Enter') {
+
         if (level == 1 && ((x >= 80 && x <= 110) && (y > 400 && y < 480))) {
             level += 1;
-            showInfoModal(level);
+            showLevelModal(level);
         } else if (level == 2 && ((x >= 900 && x <= 950) && (y > 305 && y < 350))) {
             level += 1;
-            showInfoModal(level);
+            showLevelModal(level);
         } else if (level == 3 && ((x >= 4 && x <= 6) && (y > 50 && y < 70))) {
             level += 1;
-            showInfoModal(level);
+            showLevelModal(level);
         } else if (level == 4 && ((x >= 460 && x <= 500) && (y > 240 && y < 400))) {
             level += 1;
-            showInfoModal(level);
-        } else if (level == 5 && ((x >= (heavenX - 50) && x <= (heavenX + 50)) && (y >= (heavenY - 50) && y <= (heavenY + 50)))) {
+            showLevelModal(level);
+        } else if (level == 5 && document.querySelector('input').value.toLowerCase() == tekaTeki.answer.toLowerCase()) {
             level += 1;
-            showInfoModal(level);
+            document.querySelector('.question-modal').classList.add('none');
+            showLevelModal(level);
         } else {
-            Toastify({
-                text: wrong[(Math.floor(Math.random() * wrong.length) + 1) - 1],
-                className: "info",
-                position: "center",
-                style: {
-                    background: "#856359",
-                }
-            }).showToast();
+            if (level < 5) {
+                Toastify({
+                    text: wrong[(Math.floor(Math.random() * wrong.length) + 1) - 1],
+                    className: "info",
+                    position: "center",
+                    style: {
+                        background: "#856359",
+                    }
+                }).showToast();
+            } if(level == 5) {
+                document.querySelector('input').classList.add('input-wrong');
+
+                setTimeout(() => {
+                    document.querySelector('input').classList.remove('input-wrong');
+                }, 500);
+            }
+
         }
 
-        if (level == 5) {
-            setInterval(() => {
-                console.log('HEAVEN', heavenX, heavenY);
-                heavenMove = Math.floor(Math.random() * 4) + 1;
-
-                if (heavenMove == 1) {
-                    if (!hevenRightClick) {
-                        heavenMoveRightInterval = setInterval(heavenMoveRight, 1);
-                    }
-                }
-                if (heavenMove == 2) {
-                    if (!heavenLeftClick) {
-                        heavenLeftClick = true;
-                        heavenMoveLeftInterval = setInterval(heavenMoveLeft, 1);
-                    }
-                }
-                if (heavenMove == 3) {
-                    if (!heavemDownClick) {
-                        heavemDownClick = true;
-                        heavenMoveDownInterval = setInterval(heavenMoveDown, 1);
-                    }
-                }
-                if (heavenMove == 4) {
-                    if (!heavenUpClick) {
-                        heavenUpClick = true;
-                        heavenMoveUpInterval = setInterval(heavenMoveUp, 1);
-                    }
-                }
-
-                if (heavenMove == 1) {
-                    hevenRightClick = true;
-                    heavenLeftClick = false;
-                    clearInterval(moveLeftInterval);
-                }
-                if (heavenMove == 2) {
-                    heavenLeftClick = true;
-                    hevenRightClick = false;
-                    clearInterval(moveRightInterval);
-                }
-                if (heavenMove == 3) {
-                    heavemDownClick = true;
-                    heavenUpClick = false;
-                    clearInterval(moveUpInterval);
-                }
-                if (heavenMove == 4) {
-                    heavenUpClick = true;
-                    heavemDownClick = false;
-                    clearInterval(moveDownInterval);
-                }
-            }, 1000);
-        }
     }
 });
+
+
 
 document.addEventListener('keyup', function (event) {
     if (!start) return false;
@@ -324,46 +301,6 @@ function moveUp() {
     }
 }
 
-function heavenMoveRight() {
-    if (heavenX > 900 || ((heavenX > 390 && heavenX < 391) && heavenY < 160)) {
-        clearInterval(heavenMoveRightInterval);
-        hevenRightClick = false;
-    } else {
-        heavenLeftClick = false;
-        heavenX += 1;
-    }
-}
-
-function heavenMoveLeft() {
-    if (heavenX < 5 || ((heavenX > 574 && heavenX < 575) && heavenY < 160)) {
-        clearInterval(heavenMoveLeftInterval);
-        heavenLeftClick = false;
-    } else {
-        hevenRightClick = false;
-        heavenX -= 1;
-    }
-}
-
-function heavenMoveDown() {
-    if (heavenY < 500) {
-        heavenUpClick = false;
-        heavenY += 1;
-    } else {
-        clearInterval(heavenMoveDownInterval);
-        heavenDownClick = false;
-    }
-}
-
-function heavenMoveUp() {
-    if (heavenY < 15 || ((x > 410 && x < 550) && (heavenY > 160 && heavenY < 161))) {
-        clearInterval(heavenMoveUpInterval);
-        heavenUpClick = false;
-    } else {
-        heavenDownClick = false;
-        heavenY -= 1;
-    }
-}
-
 
 document.addEventListener("DOMContentLoaded", () => {
     const audioButton = document.querySelector("#sound-control");
@@ -378,6 +315,12 @@ document.addEventListener("DOMContentLoaded", () => {
             backgroundAudio.pause();
             audioButton.setAttribute('src', 'img/sound_off.png');
         }
+    });
+
+    const infoButton = document.querySelector("#info-control");
+
+    infoButton.addEventListener("click", function () {
+        document.querySelector('.info-modal').classList.toggle('none');
     });
 });
 
