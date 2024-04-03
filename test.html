@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countdown Timer</title>
+</head>
+<body>
+
+<div id="timer"></div>
+
+<script>
+// Set the countdown duration in minutes
+const countdownDuration = 3; 
+
+// Calculate the end time
+const endTime = new Date();
+endTime.setMinutes(endTime.getMinutes() + countdownDuration);
+
+// Update the timer every second
+
+function updateTimer() {
+    const currentTime = new Date();
+    const timeDifference = endTime - currentTime;
+
+    if (timeDifference <= 0) {
+        clearInterval(timerInterval);
+        document.getElementById('timer').innerHTML = 'Countdown finished!';
+    } else {
+        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+        document.getElementById('timer').innerHTML = `${minutes}m ${seconds}s`;
+    }
+}
+</script>
+
+</body>
+</html>

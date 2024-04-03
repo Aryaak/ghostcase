@@ -44,6 +44,14 @@ body {
     text-shadow:black 1px 0 10px;;
 }
 
+#timer {
+    position: absolute;
+    left: 47.5vw;
+    top: 5vh;
+    color: white;
+    font-size: 50px;
+}
+
 .play-modal h1::before {
     content: attr(data-text);
     position: absolute;
@@ -101,7 +109,8 @@ body {
 
 .level-modal,
 .question-modal,
-.info-modal{
+.info-modal,
+.fail-modal{
     position: absolute;
     width: 100vw;
     height: 100vh;
@@ -125,6 +134,10 @@ body {
     height: 400px;
 }
 
+.fail-modal .modal {
+    width: 400px;
+}
+
 .info-modal .modal {
     width: 800px;
     height: 500px;
@@ -138,6 +151,7 @@ body {
 
 .level-modal .close,
 .question-modal .close,
+.fail-modal .close,
 .info-modal .close {
     position: absolute;
     right: 3vw;
@@ -158,6 +172,14 @@ body {
     position: absolute;
     top: 28vh;
     left: 32vw;
+    color: #ffdd88;
+    text-align: center;
+}
+
+.fail-modal div {
+    position: absolute;
+    top: 38vh;
+    left: 39vw;
     color: #ffdd88;
     text-align: center;
 }
@@ -196,6 +218,9 @@ body {
     font-size: 55px;
 }
 
+.fail-modal h3 {
+    font-size: 35px;
+}
 
 .question-modal p {
     font-size: 20px;

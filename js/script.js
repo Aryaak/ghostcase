@@ -23,7 +23,7 @@ const levels = [{
     },
     {
         title: 'Selamat jawaban kamu benar',
-        description: 'Arwah penasaran kini sudah bebas dari perpustakaan'
+        description: 'Laura kini sudah bebas dari perpustakaan'
     },
 ];
 
@@ -75,6 +75,28 @@ function showLevelModal(level) {
 
 document.querySelector('.play-button').addEventListener('click', () => {
     start = true;
+    const timerInterval = setInterval(updateTimer, 1000);
+
+    const countdownDuration = 5;
+
+    const endTime = new Date();
+    endTime.setMinutes(endTime.getMinutes() + countdownDuration);
+
+    function updateTimer() {
+        const currentTime = new Date();
+        const timeDifference = endTime - currentTime;
+
+        if (timeDifference <= 0) {
+            clearInterval(timerInterval);
+            document.getElementById('timer').innerHTML = '';
+            document.querySelector('.fail-modal').classList.remove('none');
+        } else {
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+            document.getElementById('timer').innerHTML = `${minutes}:${seconds}`;
+        }
+    }
+
     document.querySelector('.play-modal').classList.add('scroll-top');
     setTimeout(() => {
         showLevelModal(1);
@@ -137,7 +159,7 @@ ghostImage.onload = function () {
 
 var closes = document.querySelectorAll('.close');
 
-closes.forEach(function(element) {
+closes.forEach(function (element) {
     element.addEventListener('click', function () {
         document.querySelector('.level-modal').classList.add('none');
         document.querySelector('.info-modal').classList.add('none');
@@ -148,7 +170,7 @@ closes.forEach(function(element) {
             document.querySelector('.question-modal p').innerText = tekaTeki.question;
         }
 
-        if(level > 5){
+        if (level > 5 || !document.querySelector('.fail-modal').classList.contains('none')) {
             window.location.reload();
         }
     });
@@ -219,7 +241,8 @@ document.addEventListener('keydown', function (event) {
                         background: "#856359",
                     }
                 }).showToast();
-            } if(level == 5) {
+            }
+            if (level == 5) {
                 document.querySelector('input').classList.add('input-wrong');
 
                 setTimeout(() => {
@@ -322,6 +345,8 @@ document.addEventListener("DOMContentLoaded", () => {
     infoButton.addEventListener("click", function () {
         document.querySelector('.info-modal').classList.toggle('none');
     });
+
+    
 });
 
 
